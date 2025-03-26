@@ -14,14 +14,13 @@ public class Program {
     public static void printMenu() {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("formulario.txt"))) {
             String fileLine;
-
             while ((fileLine = bufferedReader.readLine()) != null) {
                 System.out.println(fileLine);
             }
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            System.out.println("Arquivo não encontrado! " + e.getMessage());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Erro interno! " + e.getMessage());
         }
     }
 
