@@ -1,5 +1,12 @@
 package com.andrew.application;
 
+import com.andrew.domain.address.Address;
+import com.andrew.domain.pet.InvalidPetException;
+import com.andrew.domain.pet.Pet;
+import com.andrew.domain.pet.PetSex;
+import com.andrew.domain.pet.PetType;
+import com.andrew.services.PetService;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -58,7 +65,7 @@ public class Program {
 
             switch (userInput) {
                 case 1:
-                    // TODO: Cadastrar novo pet
+                    createPet();
                     break;
                 case 2:
                     // TODO: Alterar pet cadastrado
@@ -80,6 +87,50 @@ public class Program {
             }
 
             System.out.println();
+        }
+    }
+
+    public static void createPet() {
+        try {
+            System.out.print("Digite o nome e sobrenome: ");
+            String petName = SCANNER.nextLine();
+            PetService.validatePetName(petName);
+
+            System.out.print("Digite o tipo do pet [Cachorro/Gato]: ");
+            String petTypeString = SCANNER.nextLine();
+            PetType petType = PetService.validatePetType(petTypeString);
+
+            System.out.print("Digite o sexo do pet [M/F]: ");
+            String petSexString = String.valueOf(SCANNER.nextLine().charAt(0));
+            PetSex petSex = PetService.validatePetSex(petSexString);
+
+            System.out.println("Informações sobre o endereço.");
+            System.out.print("Digite o número da casa: ");
+            String houseNumber = SCANNER.nextLine();
+            System.out.print("Digite o nome da cidade: ");
+            String cityName = SCANNER.nextLine();
+            System.out.print("Digite o nome da rua: ");
+            String streetName = SCANNER.nextLine();
+            Address petAddress = PetService.createAddress(houseNumber, cityName, streetName);
+
+            System.out.print("Digite a idade do pet: ");
+            String petAge = SCANNER.nextLine();
+            petAge = PetService.validatePetAge(petAge);
+
+            System.out.print("Digite o peso do pet: ");
+            String petWeight = SCANNER.nextLine();
+            petWeight = PetService.validatePetWeight(petWeight);
+
+            System.out.print("Digite a raça do pet: ");
+            String petRace = SCANNER.nextLine();
+            PetService.validatePetRace(petRace);
+
+            Pet pet = new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petRace);
+            System.out.println(pet);
+
+            // TODO: Salvar informações do pet em arquivo
+        } catch (InvalidPetException | NumberFormatException e) {
+            System.out.println("Pet inválido: " + e.getMessage());
         }
     }
 
